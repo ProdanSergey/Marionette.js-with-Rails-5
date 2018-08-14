@@ -1,0 +1,28 @@
+development:
+  adapter: mysql2
+  encoding: utf8
+  reconnect: false
+  database: project_db
+  pool: 5
+  username: root
+  password: Never#678#Ending
+  socket: /tmp/mysql.sock
+test:
+  adapter: mysql2
+  encoding: utf8
+  reconnect: false
+  database: project_db_test
+  pool: 5
+  username: root
+  password: Never#678#Ending
+  socket: /tmp/mysql.sock
+
+production:
+  adapter: mysql2
+  encoding: utf8
+  reconnect: false
+  database: project_db_prod
+  pool: 5
+  username: root
+  password: Never#678#Ending
+  socket: /tmp/mysql.sock
