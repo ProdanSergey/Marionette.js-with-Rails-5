@@ -1,14 +1,18 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy]
+  after_action only: [:index] { set_pagination_headers(:users) }
 
   # GET /users
   def index
-    @users = User.all
+    
+    @users = User.paginate(page: params[:page], per_page: 5) 
+    # @users = User.all
     render json: @users
   end
 
   # GET /users/1
   def show
+    
     render json: @user
   end
 
@@ -24,9 +28,6 @@ class UsersController < ApplicationController
     else
       render json: @user.errors, status: :unprocessable_entity
     end
-
-    
-
   end 
 
   # PATCH/PUT /users/1

@@ -3,8 +3,16 @@ import item from '../../templates/Users/user.jst';
 import collection from '../../collections/Users';
 
 import Radio from '../../Radio';
+import parse from 'parse-link-header';
 
-collection.fetch();
+collection.fetch({
+    complete(response){
+        const links = parse(response.getResponseHeader('Link'));
+        const total = response.getResponseHeader('X-Total-Count');
+        var parsed = Object.assign({}, links,{total});
+        console.log(parsed);
+    }
+});
 
 const empty = View.extend({
     template: _.template('Nothing to display...')
@@ -60,9 +68,6 @@ export default CollectionView.extend({
         'user:removed' : 'userRemoved',
         'user:selected': 'userSelected',
     },
-    // filter: function (child, index, collection) {
-    //     return child
-    // },
     userIsRemoveFromCollection(user) {
         user.destroy();
         this.trigger('collection:changed', this);

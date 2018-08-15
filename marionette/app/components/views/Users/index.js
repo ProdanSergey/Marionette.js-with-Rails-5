@@ -40,8 +40,11 @@ export default View.extend({
     },
     onChildviewSearchSubmit(childView, event) {
         const list = this.getChildView('list');
-        const query = event.target.value;
-        list.setFilter(child => child.get('firstName').toLowerCase().includes(query.toLowerCase()));
+        const query = event.target.value.toLowerCase();
+        list.setFilter(child => {
+            const { firstName, lastName } = child.attributes;
+            return firstName.toLowerCase().includes(query) || lastName.toLowerCase().includes(query);
+        });
     },
     onChildviewFormSubmit(childView, event) {
         const form = event.delegateTarget;
@@ -49,8 +52,8 @@ export default View.extend({
             processData: false,
             contentType: false,
             data: new FormData(form),
-            wait: true, // OH MY FUCKING GOD!!!
-        })
+            wait: true,
+        });
         form.reset();
     },
     onChildviewFormToggled(childView, event) {
