@@ -6,6 +6,10 @@ import Radio from '../../Radio';
 
 collection.fetch();
 
+const empty = View.extend({
+    template: _.template('Nothing to display...')
+});
+
 const userView = View.extend({
     tagName: 'li',
     template: item,
@@ -47,6 +51,7 @@ export default CollectionView.extend({
     tagName: 'ul',
     collection,
     childView: userView,
+    emptyView: empty,
     collectionEvents: {
         'remove': 'userIsRemoveFromCollection',
     },
@@ -55,6 +60,9 @@ export default CollectionView.extend({
         'user:removed' : 'userRemoved',
         'user:selected': 'userSelected',
     },
+    // filter: function (child, index, collection) {
+    //     return child
+    // },
     userIsRemoveFromCollection(user) {
         user.destroy();
         this.trigger('collection:changed', this);

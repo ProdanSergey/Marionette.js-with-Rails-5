@@ -10,12 +10,38 @@ import TodoCollection from '../../collections/Todos';
 const listItem = View.extend({
     tagName: 'li',
     template: item,
+    ui: {
+        toggle: 'input[type="checkbox"]',
+        button: 'button',
+    },
+    triggers: {
+        'change @ui.toggle': {
+            event: 'todo:toggle',
+        },
+        'click @ui.button': {
+            event: 'todo:remove',
+        },
+    },
+    onRender() {
+        
+        this.ui.toggle.prop('checked', this.model.get('todo_done'));
+    },
 })
 
 const List = CollectionView.extend({
     tagName: 'ul',
     template: _.noop,
     childView: listItem,
+    childViewEvents: {
+        'todo:toggle': 'toggleTodoState',
+        'todo:remove': 'removeTodo',
+    },
+    toggleTodoState(childView){
+        childView.model.toggle();
+    },
+    removeTodo(childView){
+        childView.model.destroy();
+    },
 })
 
 const Input = View.extend({

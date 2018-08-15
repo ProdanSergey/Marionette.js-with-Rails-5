@@ -7,6 +7,6 @@ export default Backbone.Model.extend({
     },
     urlRoot: 'http://localhost:3000/todos',
     toggle() {
-        this.set({todo_done: !this.get('todo_done')})
+        this.save({todo_done: !this.get('todo_done')})
     },
 });
