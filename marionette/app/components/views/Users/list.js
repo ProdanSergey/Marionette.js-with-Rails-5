@@ -1,18 +1,8 @@
 import { View, CollectionView } from 'backbone.marionette';
+
 import item from '../../templates/Users/user.jst';
-import collection from '../../collections/Users';
 
 import Radio from '../../Radio';
-import parse from 'parse-link-header';
-
-collection.fetch({
-    complete(response){
-        const links = parse(response.getResponseHeader('Link'));
-        const total = response.getResponseHeader('X-Total-Count');
-        var parsed = Object.assign({}, links,{total});
-        console.log(parsed);
-    }
-});
 
 const empty = View.extend({
     template: _.template('Nothing to display...')
@@ -57,29 +47,27 @@ const userView = View.extend({
 
 export default CollectionView.extend({
     tagName: 'ul',
-    collection,
     childView: userView,
     emptyView: empty,
     collectionEvents: {
-        'remove': 'userIsRemoveFromCollection',
+        'change': 'collectionChanged',
+        'update': 'collectionChanged',
     },
     childViewEvents: {
         'user:checked' : 'userChecked',
         'user:removed' : 'userRemoved',
         'user:selected': 'userSelected',
     },
-    userIsRemoveFromCollection(user) {
-        user.destroy();
+    collectionChanged(view){
         this.trigger('collection:changed', this);
     },
     userChecked(childView, event){ 
         childView.model.toggle();
-        this.trigger('collection:changed', this);
     },
     userSelected(childView, event) {
         Backbone.history.navigate(`users/${event.target.dataset.user}`, {trigger: true});
     },
     userRemoved(childView, event) {
-        childView.model.collection.remove(childView.model);
+        childView.model.destroy();
     },
 });

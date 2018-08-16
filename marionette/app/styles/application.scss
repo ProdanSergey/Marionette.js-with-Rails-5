@@ -43,6 +43,7 @@ body {
   flex-direction: column;
   justify-content: space-between;
   #users-list {
+    position: relative;
     ul {
       list-style-type: none;
       li {
@@ -72,10 +73,48 @@ body {
           margin-right: auto;
           cursor: pointer;
         }
-        button {
+        .user-delete {
           position: absolute;
             right: 0;
             margin-left: auto;
+        }
+      }
+    }
+    #list-paging {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      top: 50%;
+      right: -3rem;
+      transform: translateY(-50%);
+      ul {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        li {
+          margin: 0;
+        }
+        .paging {
+          display: block;
+          width: 35px;
+          height: 35px;
+          padding: .5rem;
+          border-radius: 50%;
+          background-repeat: no-repeat;
+          background-size: contain;
+          background-position: center center;
+          background-origin: content-box;
+        }
+        #prev-page {
+          background-image: url('images/up.svg');
+        }
+        #next-page {
+          background-image: url('images/down.svg');
         }
       }
     }
@@ -175,6 +214,10 @@ body {
           }
           &:nth-child(odd) {
             background-color: #eeeeee;
+          }
+          .todo-done {
+            text-decoration: line-through;
+            color: #9c9a9a
           }
         }
       }

@@ -6,6 +6,7 @@ import template from '../../templates/Users/user-list.jst';
 // Views
 import SearchView       from './search';
 import ListView         from './list';
+import PagingView       from './list-paging';
 import FormView         from './form';
 import FormToggleView   from './form-toggle';
 
@@ -17,6 +18,7 @@ export default View.extend({
 	regions: {
         search: '#users-search',
         list: '#list-wrapper',
+        paging: '#list-paging',
         form: '#users-form',
         toggle: '#users-formToggle',
     },
@@ -30,13 +32,14 @@ export default View.extend({
     },
     onRender() {
         this.showChildView('search', new SearchView());
-        this.showChildView('list', new ListView());
+        this.showChildView('list', new ListView({collection: this.options.fetched}));
+        this.showChildView('paging', new PagingView({list: this.getChildView('list').collection}));
         this.showChildView('form', new FormView());
         this.showChildView('toggle', new FormToggleView());
     },
     onBulkDelete(view, event){
         const users = this.getChildView('list').collection;
-        users.remove(users.where({checked: true}));
+        users.where({checked: true}).forEach(model => model.destroy());
     },
     onChildviewSearchSubmit(childView, event) {
         const list = this.getChildView('list');

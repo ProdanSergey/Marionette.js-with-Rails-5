@@ -13,6 +13,7 @@ const listItem = View.extend({
     ui: {
         toggle: 'input[type="checkbox"]',
         button: 'button',
+        text: 'span',
     },
     triggers: {
         'change @ui.toggle': {
@@ -23,8 +24,8 @@ const listItem = View.extend({
         },
     },
     onRender() {
-        
         this.ui.toggle.prop('checked', this.model.get('todo_done'));
+        this.ui.text.toggleClass('todo-done', this.model.get('todo_done'));
     },
 })
 
@@ -38,6 +39,7 @@ const List = CollectionView.extend({
     },
     toggleTodoState(childView){
         childView.model.toggle();
+        childView.ui.text.toggleClass('todo-done', childView.model.get('todo_done'));
     },
     removeTodo(childView){
         childView.model.destroy();
@@ -82,6 +84,7 @@ export default View.extend({
                 list_id: this.model.get('id'),
                 todo_text: event.target.value,
             })
+            event.target.value = '';
         }
     },
 });
